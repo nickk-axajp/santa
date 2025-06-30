@@ -1,0 +1,18 @@
+import './ErrorPage.styles.css';
+
+interface ErrorPageProps {
+  message: string;
+  onClick: () => void;
+}
+
+export function ErrorPage({ message, onClick }: ErrorPageProps) {
+  return (
+    <div className="error-page">
+      <h1 className="error-title">Oops, something's not quite right</h1>
+      <span className="error-message">{message}</span>
+      <button className="error-retry" onClick={onClick}>
+        Try again
+      </button>
+    </div>
+  );
+}

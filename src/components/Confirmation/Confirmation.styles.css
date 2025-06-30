@@ -1,0 +1,58 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+.confirmation {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: linear-gradient(135deg, #fff 80%, #e3f2fd 100%);
+  border-radius: 8px;
+  border: 2px solid #e53935;
+  box-shadow:
+    0 4px 16px rgba(229, 57, 53, 0.08),
+    0 2px 8px rgba(0, 0, 0, 0.07);
+  padding: 2rem;
+  max-width: 500px;
+  width: 100%;
+  margin: 2.5rem auto;
+  position: relative;
+  font-family: 'Roboto', Arial, sans-serif;
+}
+
+.confirmation-title {
+  color: #1976d2;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  text-align: center;
+  text-shadow:
+    0 2px 8px #e3f2fd,
+    0 1px 0 #fff;
+  letter-spacing: 1px;
+}
+
+.confirmation-message {
+  color: #333;
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.confirmation-button {
+  background: #e53935;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.7rem 1.5rem;
+  font-size: 1rem;
+  font-family: 'Roboto', Arial, sans-serif;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    transform 0.2s;
+  box-shadow: 0 2px 8px rgba(229, 57, 53, 0.1);
+}
+
+.confirmation-button:hover {
+  background: #b71c1c;
+  transform: translateY(-2px) scale(1.03);
+}
