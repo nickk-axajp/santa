@@ -1,0 +1,13 @@
+### GET
+
+GET http://localhost:3000/api/can-ask/charlie.brown
+
+### POST
+
+POST http://localhost:3000/api/ask-santa
+Content-Type: application/json
+
+{
+  "username": "charlie.brown",
+  "request": "toy car \n lego \n books"
+}
