@@ -1,3 +1,3 @@
-interface IsAllowedResponse {
+export interface IsAllowedResponse {
   allowed: boolean;
 }

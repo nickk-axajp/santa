@@ -1,3 +1,5 @@
+import { IsAllowedResponse } from './types';
+
 export async function canAsk(username: string): Promise<boolean> {
   const res = await fetch(`/api/can-ask/${encodeURIComponent(username)}`);
 

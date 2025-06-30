@@ -3,8 +3,8 @@ import { WishFormContainer } from '../WishFormContainer/WishFormContainer';
 
 export function App() {
   return (
-    <div id="app">
+    <main id="app">
       <WishFormContainer />
-    </div>
+    </main>
   );
 }

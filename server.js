@@ -52,12 +52,10 @@ app.post('/api/ask-santa', async (request, response) => {
       .json({ error: 'Username and List is required' });
   }
 
-  if (wish.length > 120) {
-    return response
-      .status(400)
-      .json({
-        error: 'Your wish is too long. Only 120 characters are allowed',
-      });
+  if (wish.length > 100) {
+    return response.status(400).json({
+      error: 'Your wish is too long. Only 120 characters are allowed',
+    });
   }
 
   try {

@@ -19,7 +19,10 @@ function getWithCache(url) {
         console.log(`Response status: ${response.status}`);
       }
 
-      return await response.json();
+      cached = await response.json();
+      lastAccessed = Date.now();
+
+      return cached;
     } catch (error) {
       console.error(error.message);
     }

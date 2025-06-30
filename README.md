@@ -1,67 +1,127 @@
-# IMPORTANT! READ before starting
+# Santa App Challenge
 
-By default for anonymous users (non logged in), your code and app will only remain on glitch.com for 5 days.
-In order to not lose your challenge, please create a glitch.com account and log in to glitch.com before proceeding.
+This is a Node.js/React application for children to submit wish requests to Santa, built as part of a coding challenge for AXA Japan. The app validates user eligibility and sends a summary of pending wishes every 15 seconds.
 
-The following README contains instructions to guide you through the coding challenge, please read them carefully.
+## How to Use
 
-# JS coding challenge:
+1. **Install dependencies:**  
+   `npm install`
 
-## How to create and submit your app using glitch
+2. **Set up environment variables:**  
+   Create a `.env` file with your Ethereal Email credentials:
 
-1. **Login to glitch**: make sure you are logged in to glitch.com
+   ```
+   MAILER_USERNAME=your_ethereal_username
+   MAILER_PASSWORD=your_ethereal_password
+   ```
 
-2. **Clone**: Go to this URL: https://glitch.com/~js-santa-app and click the `Remix your own` button to clone the code. This will copy all the code to a new, randomly generated URL (e.g. https://glitch.com/edit/#!/capable-toothpaste). This is your URL to code on, no other candidates will have this URL.
+3. **Run the application:**  
+   `npm start` to build app and start server
 
-3. **Code**: You can edit the code directly in the Glitch editor or use your editor of choice (VSCode, Sublime, etc) and copy paste the files into Glitch. Git import and export is also available in the Tools menu on the bottom left. How you edit the code is entirely up to you, so long as your finished work is viewable at the URL created in the previous step.
+   `npm run start:watch` watch for frontend changes (will need to reload pages for changes to reflect)
 
-> **NOTE**: Click `Show` in the header to see your app live. Updates to your code will instantly deploy and update live.
+4. **Access the application:**  
+   Open [http://localhost:3000](http://localhost:3000) in a browser
 
-4. **Turn in**: When you finish coding, send your URL to us so we can review your code.
+## Frontend
 
-## Objectives overview:
+### Features & Enhancements
 
-The webapp should display a form for children to enter their id and a free text message to santa.
+The following additions were made the React app:
 
-When submitting the form, the server should check:
+- Separation of application state and presentational components with [WishFormContainer.tsx](./src/components/WishFormContainer/WishFormContainer.tsx)
+- Error handling with user-friendly messages
+- Confirmation page after successful submission
+- Checking of user profile on every submission attempt
+- Disabled submit button when form is incomplete to prevent unnecessary requests for the API
+- Semantic HTML usage
+- Basic form validation
+- Prettier for code formatting consistency
 
-1.  that the child is registered
-2.  that the child is less than 10 years old.
-    To this purpose, the server can fetch user and profiles data in JSON format from:
+### Future Improvements
 
-- https://raw.githubusercontent.com/alj-devops/santa-data/master/userProfiles.json
-- https://raw.githubusercontent.com/alj-devops/santa-data/master/users.json
+If I had more time or different constraints, I would do the following:
 
-If the child is not registered (no match for the user id) or more than 10years old, the webapp should display a basic error page with an error message explaining the problem.\
-If the child is registered and less than 10 years old, the server should show a page indicating that the request has been received.
+**High Priority:**
 
-Every 15seconds, the server should send an email with information on all pending (not yet sent) requests including:
+- Upgrade packages/Node (see Development Notes)
+- Add unit and snapshot tests with Jest
+- Share type definition files between frontend and backend for API
+- Performance monitoring and logging to a logging service
+- ESLint for code linting
 
-- child username (eg. charlie.brown)
-- child's address (eg. 219-1130, Ikanikeisaiganaibaai, Musashino-shi, Tokyo)
-- request free text as was input in the form
+**Medium Priority:**
 
-Email sender should be set as do_not_reply@northpole.com, and sent to santa@northpole.com
+- Move the frontend into its own folder with a package.json file
+- Use CSS modules/preprocessor for better style management
+- Hot reloading support or Storybook integration
 
-## Tips and detailed instructions:
+## Server
 
-- Somebody started to work on the app, but left it unfinished and did not use any modern technology. We added React for you to have a clean base but feel free to use any other technology you might prefer.
-- The UI and UX of the application for this challenge is not the priority. The pages/email do not need to look good, as long as they convey the information effectively.
-- You should fetch the JSON data at every form submission (consider it as an API).
-- For the sake of the challenge, you can keep the requests in-memory only.
-- You are encouraged to select and use npm packages as needed (you can add packages by editing package.json, or using `npm install` from the glitch console).
-- To get an smtp server for emails, go to https://ethereal.email/ and click "Create Ethereal Account".\
-  This will give you an account (take note of your username and pwd if you need to re-logon later) and smtp server (actual emails do not get delivered).\
-  Go to https://ethereal.email/messages to see the emails that have been received by the smtp server.
+### Features & Enhancements
 
-## Some things we will look for in your submission
+The following additions/changes were made the Express server:
 
-- Code quality (readability, use of modern syntax...)
-- Does the app work as designed (cf. objectives overview)
-- App architecture (folder structure, configuration management...)
-- Documentation (why did you choose to change or add a package...)
+- `/api/can-ask/:username` - Validates if user can submit requests
+- `/api/ask-santa` - Processes wish submissions
+- Input validation and sanitization
+- Proper HTTP status codes and error responses
+- Fetching the user data with [node-fetch](https://github.com/node-fetch/node-fetch) and caching it with a 5 minute TTL (see [profileUtils.js](./server/utils/profileUtils.js))
+- Serving the React app instead of a static page
+- Prettier for code formatting consistency
 
-## Tips on usage of glitch
+Email service [emailService.js](./server/services/emailService.js):
 
-Click `Show` in the header to see your app live. Updates to your code will instantly deploy and update live.
-When your app is running, you can access logs and console using the "Tools" button at the bottom left.
+- Uses [nodemailer](https://nodemailer.com/)
+- Has an in-memory queue to store the messages and publish every 15 seconds for simpler development setup
+- Use environment variables to access the emailer username and password
+
+### Future Improvements
+
+If I had more time or different constraints, I would do the following:
+
+**High Priority:**
+
+- Upgrade packages/Node (see Development Notes)
+- Add unit and integration tests
+- Persistent storage instead of in-memory queuing (DB or message queue)
+- Migrate server to TypeScript
+- Upgrade to better maintained fetch library (Undici)
+
+**Medium Priority:**
+
+- Move backend into separate folder with package.json
+- User authentication and authorization
+- Rate limiting and comprehensive input validation
+- Database for user info storage (avoid in-memory joins)
+- Monitoring, logging improvements, and Swagger documentation
+
+## Development Notes
+
+The specified version of Node (16) in the projects on Glitch  has compatibility issues with some packages I tried to use (latest ESLint and [Undici](https://undici.nodejs.org/)). 
+It is also End of Life, and so I would upgrade to a newer version of Node.
+
+The existing packages are contain major security issues - there are currently are 1 critical and 6 high vulnerabilities in the project. These will need to be updated.
+
+Disclaimer: I used AI to generate the CSS styles and to format parts of this readme. All other code was done by me with no AI generated code was used.
+
+## Files overview
+
+```
+├── server.js                    # Express server with API endpoints
+├── server/
+│   ├── services/
+│   │   └── emailService.js      # Email queuing and batch sending
+│   └── utils/
+│       └── profileUtils.js      # User validation and data fetching
+├── src/
+│   ├── components/
+│   │   ├── App/                 # Main app component
+│   │   ├── WishForm/            # Form component
+│   │   ├── WishFormContainer/   # Handles app state
+│   │   ├── Confirmation/        # Success page
+│   │   └── ErrorPage/           # Error page
+│   └── services/
+│       └── santaApi.ts          # Frontend API service
+└── dist/                        # Location for built frontend components to be served from
+```

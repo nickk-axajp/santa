@@ -115,3 +115,19 @@
 .request-form button:hover {
   background: linear-gradient(90deg, #b71c1c 60%, #388e3c 100%);
 }
+
+.request-form button:disabled {
+  background: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
+  box-shadow: none;
+  opacity: 0.6;
+}
+
+.request-form button:disabled:hover {
+  background: #cccccc;
+}
+
+.request-form-description {
+  margin: 0;
+}
